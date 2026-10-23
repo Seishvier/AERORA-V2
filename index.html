@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#dbeeff">
+  <meta name="description" content="AERORA turns live weather and air-quality data into practical insights for everyday health, agriculture, and travel.">
+  <title>AERORA — Weather Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body data-theme="sunny">
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#overview" aria-label="AERORA home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 3.5C14.8 11.2 8 18.5 8 25.2a12 12 0 0 0 24 0C32 18.5 25.2 11.2 20 3.5Z" fill="currentColor" opacity=".95"/><path d="M13.5 26c.2 3.8 2.6 6.1 6 6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><path d="M25.5 7.5l1.1-3M31.6 13l3-1.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand-copy"><strong>AERORA</strong><small>WEATHER INTELLIGENCE</small></span>
+    </a>
+
+    <div class="side-label">WORKSPACE</div>
+    <nav class="side-nav">
+      <a class="nav-link active" href="#overview" data-section="overview"><span class="nav-icon" aria-hidden="true">◈</span><span>Overview</span></a>
+      <a class="nav-link" href="#air-quality" data-section="air-quality"><span class="nav-icon" aria-hidden="true">◌</span><span>Air &amp; health</span></a>
+      <a class="nav-link" href="#field-guide" data-section="field-guide"><span class="nav-icon" aria-hidden="true">⌁</span><span>Field planner</span></a>
+      <a class="nav-link" href="#visitor-guide" data-section="visitor-guide"><span class="nav-icon" aria-hidden="true">⌖</span><span>Visitor guide</span></a>
+      <a class="nav-link" href="#team" data-section="team"><span class="nav-icon" aria-hidden="true">✳</span><span>Project &amp; team</span></a>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-note glass-soft">
+      <span class="tiny-orb" aria-hidden="true">✦</span>
+      <div><strong>Think ahead.</strong><p>Small signals. Better decisions.</p></div>
+    </div>
+    <div class="sidebar-foot"><span class="live-dot"></span> Live data connection <span class="side-version">v1.0</span></div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-heading">
+        <p class="eyebrow"><span class="eyebrow-line"></span> ATMOSPHERE / REAL-TIME</p>
+        <p class="topbar-subtitle">A clearer picture of the world outside.</p>
+      </div>
+      <div class="topbar-actions">
+        <span class="updated-label"><span class="live-dot"></span><span id="connectionLabel">Connecting to forecast</span></span>
+        <button class="icon-button" id="refreshButton" type="button" aria-label="Refresh weather data" title="Refresh data">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.7 9a7 7 0 0 1 11.7-2L20 12M4 12l2.6 5a7 7 0 0 0 11.7-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="search-row" aria-label="Find a city">
+      <form class="city-search glass" id="searchForm">
+        <span class="search-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        <label class="sr-only" for="cityInput">Search for a city</label>
+        <input id="cityInput" name="city" type="search" value="Surabaya" placeholder="Search city or region…" autocomplete="off" minlength="2" required>
+        <button class="search-button" type="submit"><span>Explore city</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+      <p class="search-hint">Try a city anywhere in the world <span>·</span> No account needed</p>
+      <div class="search-results glass" id="searchResults" hidden aria-live="polite"></div>
+    </section>
+
+    <section class="hero-section" id="overview" aria-labelledby="heroTitle">
+      <div class="hero-card glass-panel">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <div class="hero-status"><span class="live-dot"></span><span id="heroStatus">CURRENT CONDITIONS</span><span class="status-divider"></span><span id="localClock">LOCAL TIME</span></div>
+          <div class="location-line"><span class="location-pin" aria-hidden="true">⌖</span><span id="cityName">Surabaya</span><span class="location-country" id="cityCountry">Indonesia</span></div>
+          <p class="hero-date" id="dateLabel">Your local forecast at a glance</p>
+          <h1 id="heroTitle">Read the sky.<br><em>Make better decisions.</em></h1>
+          <div class="hero-condition">
+            <div class="weather-icon-large" id="heroWeatherIcon" aria-hidden="true"></div>
+            <div><div class="temperature"><span id="temperatureValue">--</span><span class="degree">°</span></div><p class="condition-name" id="weatherDescription">Retrieving the atmosphere…</p><p class="feels-like">Feels like <strong id="feelsLikeValue">--°</strong></p></div>
+          </div>
+          <div class="hero-footer"><span class="data-pulse"></span><span id="weatherSourceLine">Live forecast · Open-Meteo</span><span class="hero-footer-divider"></span><span id="highLowLabel">High --° / Low --°</span></div>
+        </div>
+        <div class="hero-art-wrap" aria-hidden="true">
+          <div class="art-halo"></div>
+          <img class="hero-art" src="assets/weather-world.webp" alt="" fetchpriority="high">
+          <div class="art-caption"><span class="art-caption-mark">✦</span><div><strong>Weather, with context.</strong><small>From atmosphere to action</small></div></div>
+        </div>
+        <div class="hero-weather-stamp" aria-hidden="true"><span id="heroStamp">01</span><small>SKY<br>INDEX</small></div>
+      </div>
+
+      <div class="metrics-grid" aria-label="Current weather details">
+        <article class="metric-card glass"><div class="metric-heading"><span class="metric-icon humidity-icon" aria-hidden="true">◉</span><span>Humidity</span></div><div class="metric-value"><span id="humidityValue">--</span><small>%</small></div><p class="metric-note" id="humidityNote">Relative humidity</p><div class="meter"><span id="humidityMeter" style="width:0%"></span></div></article>
+        <article class="metric-card glass"><div class="metric-heading"><span class="metric-icon wind-icon" aria-hidden="true">≋</span><span>Wind speed</span></div><div class="metric-value"><span id="windValue">--</span><small>km/h</small></div><p class="metric-note" id="windNote">Near-surface wind</p><div class="meter"><span id="windMeter" style="width:0%"></span></div></article>
+        <article class="metric-card glass"><div class="metric-heading"><span class="metric-icon rain-icon" aria-hidden="true">⌁</span><span>Rain chance</span></div><div class="metric-value"><span id="rainValue">--</span><small>%</small></div><p class="metric-note" id="rainNote">Today's forecast</p><div class="meter"><span id="rainMeter" style="width:0%"></span></div></article>
+        <article class="metric-card glass"><div class="metric-heading"><span class="metric-icon uv-icon" aria-hidden="true">☼</span><span>Peak UV</span></div><div class="metric-value"><span id="uvValue">--</span><small id="uvUnit">index</small></div><p class="metric-note" id="uvNote">Daily UV outlook</p><div class="meter"><span id="uvMeter" style="width:0%"></span></div></article>
+      </div>
+    </section>
+
+    <section class="section-block" id="air-quality" aria-labelledby="airTitle">
+      <div class="section-heading">
+        <div><p class="eyebrow section-eyebrow">01 / BREATHE BETTER</p><h2 id="airTitle">Air, in perspective<span class="heading-period">.</span></h2><p class="section-description">Environmental signals to help you plan your day with care.</p></div>
+        <span class="section-side-note">AIR QUALITY MONITOR</span>
+      </div>
+      <div class="air-layout">
+        <article class="air-main-card glass-panel">
+          <div class="air-card-top"><div><p class="card-kicker">US AIR QUALITY INDEX</p><p class="air-index-caption">Current model estimate</p></div><span class="air-quality-pill" id="aqiBadge">Loading</span></div>
+          <div class="air-score-row"><div class="air-score"><span id="aqiValue">--</span><small>AQI</small></div><div class="air-gauge" aria-hidden="true"><div class="gauge-track"><div class="gauge-fill" id="aqiGauge"></div></div><div class="gauge-labels"><span>Good</span><span>Moderate</span><span>High</span></div></div></div>
+          <div class="air-scale" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <p class="air-status-title" id="aqiStatusTitle">Checking the air around you</p><p class="air-status-copy" id="aqiDescription">Air-quality details will appear here when the forecast loads.</p>
+          <div class="air-bottom-note"><span class="note-mark">i</span><span>Forecast estimates are not a substitute for official local air-quality alerts.</span></div>
+        </article>
+        <div class="pollutant-stack">
+          <article class="pollutant-card glass"><div class="pollutant-card-top"><span class="pollutant-symbol">PM<span>2.5</span></span><span class="pollutant-tag">FINE PARTICLES</span></div><div class="pollutant-value"><span id="pm25Value">--</span><small>μg/m³</small></div><div class="pollutant-bottom"><span>Fine particulate matter</span><span class="mini-status" id="pm25Status">—</span></div></article>
+          <article class="pollutant-card glass"><div class="pollutant-card-top"><span class="pollutant-symbol">PM<span>10</span></span><span class="pollutant-tag">COARSE PARTICLES</span></div><div class="pollutant-value"><span id="pm10Value">--</span><small>μg/m³</small></div><div class="pollutant-bottom"><span>Coarse particulate matter</span><span class="mini-status" id="pm10Status">—</span></div></article>
+          <article class="health-tip glass"><div class="tip-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 27s-10-5.6-10-13.4A5.6 5.6 0 0 1 16 10a5.6 5.6 0 0 1 10 3.6C26 21.4 16 27 16 27Z" stroke="currentColor" stroke-width="1.7"/><path d="M9 17h4l2-4 3.2 7 1.8-3H24" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><p class="card-kicker">PERSONAL WELLBEING</p><h3 id="healthTipTitle">A little awareness goes a long way.</h3><p id="healthTipText">Choose activities with local conditions in mind.</p></div></article>
+        </div>
+      </div>
+      <p class="data-attribution">Air-quality estimates from Open-Meteo, based on atmospheric composition model forecasts. <a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener noreferrer">About this data ↗</a></p>
+    </section>
+
+    <section class="section-block forecast-block" aria-labelledby="forecastTitle">
+      <div class="section-heading compact-heading"><div><p class="eyebrow section-eyebrow">02 / LOOK AHEAD</p><h2 id="forecastTitle">The next few days<span class="heading-period">.</span></h2><p class="section-description">A little foresight can change how a day feels.</p></div><span class="forecast-timezone" id="forecastTimezone">LOCAL FORECAST</span></div>
+      <div class="forecast-grid" id="forecastGrid" aria-live="polite"><div class="loading-card glass"><span class="loading-shimmer"></span><span class="loading-shimmer short"></span></div><div class="loading-card glass"><span class="loading-shimmer"></span><span class="loading-shimmer short"></span></div><div class="loading-card glass"><span class="loading-shimmer"></span><span class="loading-shimmer short"></span></div><div class="loading-card glass"><span class="loading-shimmer"></span><span class="loading-shimmer short"></span></div><div class="loading-card glass"><span class="loading-shimmer"></span><span class="loading-shimmer short"></span></div></div>
+      <div class="forecast-footnote"><span class="footnote-star">✳</span><span id="forecastFootnote">Forecasts are estimates and may change as weather systems evolve.</span></div>
+    </section>
+
+    <section class="section-block insight-section" id="field-guide" aria-labelledby="fieldTitle">
+      <div class="section-heading"><div><p class="eyebrow section-eyebrow">03 / GROW WITH THE WEATHER</p><h2 id="fieldTitle">A thoughtful field guide<span class="heading-period">.</span></h2><p class="section-description">Practical planning cues for gardens, small farms, and green spaces.</p></div><span class="section-side-note">AGRICULTURE / PRECISION PLANNING</span></div>
+      <div class="insight-card field-card glass-panel">
+        <div class="insight-illustration field-illustration" aria-hidden="true"><svg viewBox="0 0 260 200" fill="none"><ellipse cx="132" cy="161" rx="100" ry="17" fill="currentColor" opacity=".08"/><path d="M32 146 130 90l97 56-97 37-98-37Z" fill="#7A9D7E" opacity=".55"/><path d="m32 146 98 37 97-37M56 132l74 29 74-29M80 118l50 20 50-20" stroke="#E3F4C3" stroke-width="2" stroke-linecap="round"/><path d="M129 125c-18-23-13-43 2-61 16 19 19 39-2 61Z" fill="#4D8866"/><path d="M129 125c0-25 0-42 2-61" stroke="#D8EBCB" stroke-width="2" stroke-linecap="round"/><path d="M110 116c-25-4-33-20-31-39 24 6 37 17 31 39Z" fill="#6EAA79"/><path d="M110 116 81 77" stroke="#E0F0CA" stroke-width="2" stroke-linecap="round"/><path d="M146 114c23-8 29-24 23-43-22 10-32 23-23 43Z" fill="#94BF7A"/><path d="m146 114 23-43" stroke="#E0F0CA" stroke-width="2" stroke-linecap="round"/><path d="M51 84c-9-10-8-20 1-29 10 11 10 21-1 29Z" fill="#80B3DF" opacity=".9"/><path d="M51 87v10M43 93h16" stroke="#80B3DF" stroke-width="2" stroke-linecap="round"/><path d="M207 67c-9-10-8-20 1-29 10 11 10 21-1 29Z" fill="#80B3DF" opacity=".9"/><path d="M207 70v10M199 76h16" stroke="#80B3DF" stroke-width="2" stroke-linecap="round"/><circle cx="189" cy="34" r="13" fill="#F7CE7B"/><path d="M189 13v-5m0 52v-5m21-21h5m-52 0h5m36-15 4-4m-37 37-4 4m37 0 4 4m-37-37-4-4" stroke="#EAB66A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="insight-copy"><div class="insight-tag"><span class="insight-tag-dot"></span> FIELD NOTE / TODAY</div><h3 id="farmAdviceTitle">Work with the forecast, not against it.</h3><p id="farmAdviceText">Local weather details will shape the planning notes for this location.</p><div class="insight-checklist" id="farmChecklist"><div><span class="check-mark">✓</span><span>Check rainfall probability before scheduling irrigation.</span></div><div><span class="check-mark">✓</span><span>Use local soil conditions to decide whether crops need water.</span></div></div><p class="advice-disclaimer">General planning guidance only. Crop needs vary by soil, plant stage, and local conditions.</p></div>
+        <div class="insight-index"><span>FIELD</span><strong>01</strong><small>INSIGHT</small></div>
+      </div>
+    </section>
+
+    <section class="section-block insight-section" id="visitor-guide" aria-labelledby="visitorTitle">
+      <div class="section-heading"><div><p class="eyebrow section-eyebrow">04 / GO OUT WITH INTENTION</p><h2 id="visitorTitle">A better day to explore<span class="heading-period">.</span></h2><p class="section-description">Weather-aware pointers for visitors, outdoor plans, and local discovery.</p></div><span class="section-side-note">TRAVEL / ECO-TOURISM</span></div>
+      <div class="visitor-layout">
+        <article class="visitor-main glass-panel"><div class="visitor-copy"><div class="insight-tag"><span class="insight-tag-dot"></span> YOUR OUTDOOR OUTLOOK</div><h3 id="tourismAdviceTitle">Make room for a little discovery.</h3><p id="tourismAdviceText">We’ll shape a suggestion around the current conditions and the upcoming forecast.</p><div class="visitor-score-row"><div class="visitor-score"><span id="tourismScore">--</span><small>/ 100</small></div><div><strong id="tourismScoreLabel">Weather suitability</strong><p id="tourismScoreDetail">Based on rain chance, temperature, and UV.</p></div></div></div><div class="visitor-art" aria-hidden="true"><div class="sun-disc"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="tiny-path"></div><span class="floating-leaf leaf-one">✦</span><span class="floating-leaf leaf-two">✧</span></div></article>
+        <article class="visitor-check glass"><div class="visitor-check-icon" aria-hidden="true">⌖</div><div><p class="card-kicker">BEFORE YOU LEAVE</p><h3>Plan for the moment.</h3><p id="tourismChecklist">Check local alerts, bring water, and adjust outdoor plans if conditions change.</p><div class="visitor-chips"><span id="tripRainChip">Rain —</span><span id="tripUvChip">UV —</span></div></div></article>
+      </div>
+      <p class="advice-disclaimer standalone-disclaimer">AERORA provides general planning ideas, not official travel, medical, or agricultural advisories. Follow local alerts and professional guidance.</p>
+    </section>
+
+    <section class="section-block team-section" id="team" aria-labelledby="teamTitle">
+      <div class="section-heading"><div><p class="eyebrow section-eyebrow">05 / THE PEOPLE BEHIND THE PROJECT</p><h2 id="teamTitle">Built by curious minds<span class="heading-period">.</span></h2><p class="section-description">A student project exploring how data can make everyday decisions a little smarter.</p></div><span class="section-side-note">PROJECT TEAM</span></div>
+      <div class="team-grid">
+        <article class="team-card glass"><div class="team-avatar avatar-blue">MF</div><div class="team-detail"><strong>Muhammad Fathan N.A.</strong><span>Student team · No. 24</span></div><span class="team-number">24</span></article>
+        <article class="team-card glass"><div class="team-avatar avatar-peach">NK</div><div class="team-detail"><strong>Nayla Khaira W.P</strong><span>Student team · No. 28</span></div><span class="team-number">28</span></article>
+        <article class="team-card glass"><div class="team-avatar avatar-lilac">NM</div><div class="team-detail"><strong>Nayla Maritza Sasmita</strong><span>Student team · No. 29</span></div><span class="team-number">29</span></article>
+        <article class="team-card glass"><div class="team-avatar avatar-green">NS</div><div class="team-detail"><strong>Netta Safira Nur F.</strong><span>Student team · No. 30</span></div><span class="team-number">30</span></article>
+      </div>
+      <div class="share-panel glass-panel"><div class="share-copy"><div class="share-mark" aria-hidden="true">↗</div><div><p class="card-kicker">PASS THE FORECAST ALONG</p><h3>Good insight travels.</h3><p>Scan this code to open AERORA on another device. Once deployed, this QR code uses your live website address.</p><p id="qrStatus" class="qr-status" aria-live="polite">Preparing your share code…</p></div></div><div class="qr-frame"><div class="qr-code" id="qrCodeMain" aria-label="QR code for this website"></div><span class="qr-caption">SCAN TO EXPLORE</span></div></div>
+    </section>
+
+    <footer class="site-footer"><div class="footer-brand"><span class="footer-logo">A</span><span><strong>AERORA</strong><small>WEATHER INTELLIGENCE</small></span></div><p>See the conditions. Understand the context. Choose with care.</p><div class="footer-meta"><span>Data: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span><span>·</span><span>Student project</span><span>·</span><span id="footerYear">2026</span></div></footer>
+  </main>
+
+  <div class="toast-message" id="toastMessage" role="status" aria-live="polite"></div>
+</body>
+</html>
